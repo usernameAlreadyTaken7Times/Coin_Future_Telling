@@ -1,16 +1,37 @@
-# This is a sample Python script.
+from functions import *
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+    print('PyCharm')
+
+    error_time = 0
+    if isinstance(num_1, int) and 0 <= num_1 <= 3:
+        pass
+    else:
+        error_time += 1
+
+    if isinstance(num_2, int) and 0 <= num_2 <= 3:
+        pass
+    else:
+        error_time += 1
+
+    if isinstance(num_3, int) and 0 <= num_3 <= 3:
+        pass
+    else:
+        error_time += 1
+
+    if isinstance(num_4, int) and 0 <= num_4 <= 3:
+        pass
+    else:
+        error_time += 1
+
+    if isinstance(num_5, int) and 0 <= num_5 <= 3:
+        pass
+    else:
+        error_time += 1
+
+    if isinstance(num_6, int) and 0 <= num_6 <= 3:
+        pass
+    else:
+        error_time += 1
