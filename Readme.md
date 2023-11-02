@@ -1,4 +1,4 @@
-### 硬币算卦简易程序
+### A simple Coin_Future_Telling program
 
 
 This program can be used to tell your daily future with three coins:-)
