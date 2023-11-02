@@ -3,7 +3,10 @@ import requests
 
 
 def get_hex_link(num):
-    """return the weblink for the given number's hexagram"""
+    """Return the weblink for the given number's hexagram.
+    :param int num: The order number of the hexagram.
+    :return: The webpage for the given hexagram.
+    """
     if isinstance(num, int) and 1 <= num <= 64:
         pass
     else:
@@ -29,6 +32,7 @@ def get_hex_link(num):
 def get_webpage(link):
     """This function aims to retrieve the website contents for further parsing.
     :param str link: The website's url link.
+    :return: The request result of the given webpage.
     """
     # test if link valid
     if isinstance(link, str):
@@ -50,6 +54,7 @@ def webpage_parsing_all(text_input):
     """This function aims to parse the website's future-telling trigram content as .html format,
     and then get the text chapters with all information of this hexagram.
     :param str text_input: The web-link you want to parse.
+    :return: All the webpage texts for the hexagram (for all change Yaos).
     """
 
     soup = BeautifulSoup(text_input, 'html.parser')
@@ -119,6 +124,7 @@ def webpage_parsing_part(text_input, chp_num_text):
     and then get only the text chapters of the related hexagram.
     :param str text_input: The web-link you want to parse,
     :param int chp_num_text: the chapter number of the chosen paragraph, should be in range (0,7)
+    :return: The webpage text for the hexagram (for the chosen change Yao only).
     """
 
     if isinstance(chp_num_text, int) and 0 <= chp_num_text <= 6:
@@ -200,6 +206,9 @@ def to_txt(path, name, text):
     :param str text: the to-be-witten text.
     """
 
+    # This function aims to store the given text into a .txt file.
+    # While it was not used in this script.
+
     # os.getcwd()
 
     with open(path + name, "w") as f:
@@ -233,6 +242,8 @@ def set_hex(num_list):
     """Use the numbers of heads when three coins are flipped for six times as input,
      and return the corresponding hexagram and the Change Yao.
      :param list num_list: The list for heads of the six flips for the three coins;
+     :return: the built hexagram, the corresponding change Yaos(when available),
+     and the change Yaos' place(when available)
      """
 
     def set_yao(num):
@@ -279,6 +290,9 @@ def set_hex(num_list):
 
 def get_changed_hex(hex_yao_list, change_yao_index):
     """Use the original hexagram and the change Yaos to get the changed hexagram.
+    :param list hex_yao_list: The hexagram's original Yaos;
+    :param list change_yao_index: The change Yaos' place for the hexagram;
+    :return: the changed hexagram
     """
     changed_hex = hex_yao_list.copy()
 
@@ -294,6 +308,9 @@ def get_changed_hex(hex_yao_list, change_yao_index):
 
 def instruction_format_1(text_1, title_1):
     """This function aims to improve the typesetting for the output result when there is one part of text involved.
+    :param str text_1: The to-be-formatted text;
+    :param str title_1: The to-be-formatted text's title;
+    :return: the well-formatted text with title, ready for output or print.
     """
     text_part_0 = ('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n$\t\t\t\t卦象详解\t\t\t\t '
                    '$\n$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n')
@@ -310,6 +327,11 @@ def instruction_format_1(text_1, title_1):
 def instruction_format_2(text_1, text_2, title_1, title_2):
     """This function aims to improve the typesetting for the output result when there are two parts of texts involved.
     First the important one, then the not important one.
+    :param str text_1: The to-be-formatted text for hexagram/change Yao 1;
+    :param str title_1: The to-be-formatted text's title for hexagram/change Yao 1;
+    :param str text_2: The to-be-formatted text for hexagram/change Yao 2;
+    :param str title_2: The to-be-formatted text's title for hexagram/change Yao 2;
+    :return: the well-formatted text with title, ready for output or print.
     """
     text_part_0 = ('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n$\t\t\t\t卦象详解\t\t\t\t '
                    '$\n$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n')
@@ -327,7 +349,10 @@ def instruction_format_2(text_1, text_2, title_1, title_2):
 
 def get_instructions(hex_yao_list, change_yao_num, change_yao_index):
     """Return the corresponding explanation to the hexagram.
-
+    :param list hex_yao_list: The hexagram's Yaos;
+    :param list change_yao_num: The number of the hexagram's changed Yaos';
+    :param list change_yao_index: the places for the hexagram;
+    :return: the output instruction or explanations for the hexagram(s).
     """
 
     print_text = ''
@@ -424,3 +449,75 @@ def get_instructions(hex_yao_list, change_yao_num, change_yao_index):
         print_text = instruction_format_1(result[0], result[1])
 
     return print_text
+
+
+def test_input_and_error_manage(input_num, error_num):
+    """Use this function to test if the input in the main program is valid, and if not, return the corresponding output.
+    :param str input_num: The inputted number, representing the heads for one flip with three coins;
+    :param int error_num: The times of wrong input;
+    """
+
+    type_error = False
+    value_error = False
+    value_too_big = False
+
+    quit_code = False
+
+    # check weather the input is valid
+    try:
+        input_num = int(input_num)
+    except ValueError:
+        type_error = True
+        error_num += 1
+
+    if not type_error:
+        if 0 <= input_num <= 3:
+            pass
+        elif input_num > 3:
+            value_error = True
+            value_too_big = True
+            error_num += 1
+        else:
+            value_error = True
+            error_num += 1
+
+    # if not valid, give out the result
+    if type_error:
+        if error_num == 1:
+            print('亲，请输入数字。')
+        elif error_num == 2:
+            print('亲，请输入正确的数字可好？0到3！两次了都，别搞啊。')
+        elif error_num == 3:
+            print('数字！数字！只输入数字，0到3！别输别的！你能行的，相信自己！')
+        elif error_num == 4:
+            print('.......来，我们各退一步，你认真输数字，我保证不打你（温柔），记得输正确的数字啊，0到3！')
+        elif error_num == 5:
+            print('最后一次提醒了，真的。输!数!字!0!到!3!我们就还是好朋友（咬牙切齿）。')
+        elif error_num == 6:
+            print('你完了!地爆天星！')
+            time.sleep(2)
+            quit_code = True
+
+    if value_error:
+        if error_num == 1:
+            print('亲，数字不太对。三个硬币掷出的正面应该在0和3之间，你说对吧？')
+        elif error_num == 2:
+            if value_too_big:
+                print(f'我认为，三个硬币是无论如何都掷不出{str(input_num)}个正面的。要不再来一次？')
+            else:
+                print(f'我认为，三个硬币是无论如何都掷不出{str(input_num)}个正面的。要不再来一次？')
+        elif error_num == 3:
+            print('我从未设想过输入0到3的数字竟如此困难，真的。')
+        elif error_num == 4:
+            print('.......来，我们各退一步，你认真输数字，我保证不打你（温柔），记得输正确的数字啊，0到3！')
+        elif error_num == 5:
+            print(f'最后一次提醒了，真的。输!数!字!0!到!3!三个硬币到底要怎么做才能掷出{str(input_num)}个正面啊！（咬牙切齿）')
+        elif error_num == 6:
+            print('你完了!地爆天星！')
+            time.sleep(2)
+            quit_code = True
+
+    if type_error or value_error:  # there is an error with the input
+        return False, error_num, quit_code
+    else:
+        return True, error_num, quit_code
