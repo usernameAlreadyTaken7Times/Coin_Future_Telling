@@ -1,5 +1,8 @@
 from bs4 import BeautifulSoup
 import requests
+import time
+import os
+import sys
 
 
 def get_hex_link(num):
@@ -350,7 +353,7 @@ def instruction_format_2(text_1, text_2, title_1, title_2):
 def get_instructions(hex_yao_list, change_yao_num, change_yao_index):
     """Return the corresponding explanation to the hexagram.
     :param list hex_yao_list: The hexagram's Yaos;
-    :param list change_yao_num: The number of the hexagram's changed Yaos';
+    :param list change_yao_num: The number of the hexagram's changed Yaos;';
     :param list change_yao_index: the places for the hexagram;
     :return: the output instruction or explanations for the hexagram(s).
     """
@@ -521,3 +524,31 @@ def test_input_and_error_manage(input_num, error_num):
         return False, error_num, quit_code
     else:
         return True, error_num, quit_code
+
+
+def get_input(flip_time, error_time):
+    """This function can be used to get the input number for the flip.
+    :param int flip_time: The time of the input loop;
+    :param int error_time: The time of mistakes;
+    """
+    input_string = ['来，默念你要算的东西，然后掷一次硬币，并输入正面的数量：',
+                    '继续默念你要算的东西，然后再掷一次硬币，并输入正面的数量：',
+                    '再来一次，输入正面的数量：',
+                    '第四次正面的数量：',
+                    '第五次正面的数量：',
+                    '最后一次正面的数量：']
+
+    num_valid = False
+    num = -1
+
+    while not num_valid:
+        num = input(input_string[flip_time-1])
+        num_valid, error_time, quit_code = test_input_and_error_manage(num, error_time)
+        if quit_code:
+            print('好吧你完了，但又没完全完。这次只是注销系统，下次就直接关你机了！')  # actually not:-)
+            os.system('RunDll32.exe user32.dll, LockWorkStation')
+            time.sleep(5)
+            sys.exit(0)
+    num = int(num)
+
+    return num, error_time

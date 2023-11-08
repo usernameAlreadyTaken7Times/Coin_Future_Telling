@@ -1,6 +1,5 @@
 from functions import *
 import time
-import os
 import sys
 
 
@@ -38,89 +37,21 @@ if __name__ == '__main__':
     print('**************************************\n\n')
 
     error_time = 0
-    num_1 = -1
-    num_2 = -1
-    num_3 = -1
-    num_4 = -1
-    num_5 = -1
-    num_6 = -1
+    input_list = []
 
-    num_1_valid = False
-    while not num_1_valid:
-        num_1 = input('来，默念你要算的东西，然后掷一次硬币，并输入正面的数量：')
-        num_1_valid, error_time, quit_code = test_input_and_error_manage(num_1, error_time)
-        if quit_code:
-            print('好吧你完了，但又没完全完。这次只是注销系统，下次就直接关你机了！')  # actually not:-)
-            os.system('RunDll32.exe user32.dll, LockWorkStation')
-            time.sleep(5)
-            sys.exit(0)
-    num_1 = int(num_1)
+    for num_time in range(1, 7):
+        num, error_time = get_input(num_time, error_time)
+        input_list.append(num)
 
-    num_2_valid = False
-    while not num_2_valid:
-        num_2 = input('继续默念你要算的东西，然后再掷一次硬币，并输入正面的数量：')
-        num_2_valid, error_time, quit_code = test_input_and_error_manage(num_2, error_time)
-        if quit_code:
-            print('好吧你完了，但又没完全完。这次只是注销系统，下次就直接关你机了！')  # actually not:-)
-            os.system('RunDll32.exe user32.dll, LockWorkStation')
-            time.sleep(5)
-            sys.exit(0)
-    num_2 = int(num_2)
-
-    num_3_valid = False
-    while not num_3_valid:
-        num_3 = input('再来一次，输入正面的数量：')
-        num_3_valid, error_time, quit_code = test_input_and_error_manage(num_3, error_time)
-        if quit_code:
-            print('好吧你完了，但又没完全完。这次只是注销系统，下次就直接关你机了！')  # actually not:-)
-            os.system('RunDll32.exe user32.dll, LockWorkStation')
-            time.sleep(5)
-            sys.exit(0)
-    num_3 = int(num_3)
-
-    num_4_valid = False
-    while not num_4_valid:
-        num_4 = input('第四次正面的数量：')
-        num_4_valid, error_time, quit_code = test_input_and_error_manage(num_4, error_time)
-        if quit_code:
-            print('好吧你完了，但又没完全完。这次只是注销系统，下次就直接关你机了！')  # actually not:-)
-            os.system('RunDll32.exe user32.dll, LockWorkStation')
-            time.sleep(5)
-            sys.exit(0)
-    num_4 = int(num_4)
-
-    num_5_valid = False
-    while not num_5_valid:
-        num_5 = input('第五次正面的数量：')
-        num_5_valid, error_time, quit_code = test_input_and_error_manage(num_5, error_time)
-        if quit_code:
-            print('好吧你完了，但又没完全完。这次只是注销系统，下次就直接关你机了！')  # actually not:-)
-            os.system('RunDll32.exe user32.dll, LockWorkStation')
-            time.sleep(5)
-            sys.exit(0)
-    num_5 = int(num_5)
-
-    num_6_valid = False
-    while not num_6_valid:
-        num_6 = input('最后一次正面的数量：')
-        num_6_valid, error_time, quit_code = test_input_and_error_manage(num_6, error_time)
-        if quit_code:
-            print('好吧你完了，但又没完全完。这次只是注销系统，下次就直接关你机了！')  # actually not:-)
-            os.system('RunDll32.exe user32.dll, LockWorkStation')
-            time.sleep(5)
-            sys.exit(0)
-    num_6 = int(num_6)
-
-    # confirm
-    print(f'确认一下，你的六次掷硬币正面的数量分别为{str([num_1, num_2, num_3, num_4, num_5, num_6])}。')
+    # confirm the input
+    print(f'确认一下，你的六次掷硬币正面的数量分别为{str(input_list)}。')
     print('--------------------------------------\n')
-    time.sleep(3)
+    time.sleep(2)
 
     print('**************************************\n\n')
 
-    # build a hexagram with the coin results
-    num_list = [num_1, num_2, num_3, num_4, num_5, num_6]
-    hex_result = set_hex(num_list)
+    # retrieve the hexagram result
+    hex_result = set_hex(input_list)
 
     # get the explanation of the hexagram
     result_text = get_instructions(hex_result[0], hex_result[1], hex_result[2])
